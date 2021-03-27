@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
        Problema problema = new Problema(status.value(), LocalDateTime.now(),"Um ou mais campos inválidos ou obrigatórios sem dados");

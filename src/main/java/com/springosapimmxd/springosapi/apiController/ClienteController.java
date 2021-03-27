@@ -1,6 +1,7 @@
 package com.springosapimmxd.springosapi.apiController;
 
 import com.springosapimmxd.springosapi.domain.model.Cliente;
+import com.springosapimmxd.springosapi.domain.service.CadastroClienteService;
 import com.springosapimmxd.springosapi.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,10 @@ public class ClienteController {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private CadastroClienteService cadastroClienteService;
+
 
     @GetMapping("/clientes")
     public List<Cliente> listar() {
@@ -46,7 +51,7 @@ public class ClienteController {
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente adicionar(@Valid @RequestBody Cliente cliente){
 
-        return  clienteRepository.save(cliente);
+        return cadastroClienteService.salvar(cliente);
     }
 
     @PutMapping("/cliente/{clienteId}")
@@ -54,7 +59,7 @@ public class ClienteController {
 
         if (clienteRepository.existsById(clienteId)) {
             cliente.setId(clienteId);
-            cliente =  clienteRepository.save(cliente);
+            cliente = cadastroClienteService.salvar(cliente);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -66,7 +71,7 @@ public class ClienteController {
         Optional<Cliente> cliente = clienteRepository.findById(clienteId);
 
         if (cliente.isPresent()){
-            clienteRepository.deleteById(clienteId);
+            cadastroClienteService.excluir(clienteId);
             return ResponseEntity.noContent().build();
         }
 
